@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<ruleset name="whizbang PMD ruleset"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>
+        This ruleset defines the PMD rules for project "whizbang".
+    </description>
+
+    <rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP" />
+    <rule ref="category/java/bestpractices.xml/CheckResultSet" />
+    <rule ref="category/java/bestpractices.xml/UnusedFormalParameter" />
+    <rule ref="category/java/bestpractices.xml/UnusedLocalVariable" />
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField" />
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateMethod" />
+
+    <rule ref="category/java/codestyle.xml/UnnecessaryImport" />
+
+    <rule ref="category/java/errorprone.xml/AvoidBranchingStatementAsLastInLoop" />
+    <rule ref="category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor" />
+    <rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators" />
+    <rule ref="category/java/errorprone.xml/AvoidUsingOctalValues" />
+    <rule ref="category/java/errorprone.xml/BrokenNullCheck" />
+    <rule ref="category/java/errorprone.xml/EmptyCatchBlock" />
+    <rule ref="category/java/performance.xml/StringToString" />
+    <rule ref="category/java/design.xml/ExcessiveImports">
+        <properties>
+            <property name="minimum" value="50" />
+        </properties>
+    </rule>
+
+    <rule ref="category/java/errorprone.xml/ProperLogger">
+        <properties>
+            <property name="staticLoggerName" value="LOG" />
+            <property name="loggerName" value="log" />
+            <property name="loggerClass" value="org.slf4j.Logger" />
+        </properties>
+    </rule>
+
+    <rule ref="category/java/design.xml/ExcessivePublicCount">
+        <properties>
+            <property name="minimum" value="100" />
+        </properties>
+    </rule>
+
+    <rule name="ReplaceOldCommonsLang"
+        language="java"
+        message="Use Apache Commons Lang 3 instead of the older version"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+      This rule detects usage of old Apache Commons Lang and suggests using version 3 instead.
+  </description>
+        <priority>3</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    //ImportDeclaration[@PackageName='org.apache.commons.lang' or starts-with(@PackageName, 'org.apache.commons.lang.')]
+                </value>
+            </property>
+        </properties>
+    </rule>
+
+    <rule name="UseLombokNonNull"
+        language="java"
+        message="Use lombok.NonNull instead of @NonNull"
+        class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            This rule checks if @NonNull is present and suggests using lombok.NonNull instead.
+        </description>
+        <priority>3</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    //ImportDeclaration[
+                    ends-with(@PackageName, '.NonNull')
+                    and not(@PackageName = 'lombok.NonNull')
+                ]
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            public class Example {
+                @NonNull // Violation: Should use lombok.NonNull
+                private String field;
+
+                @lombok.NonNull // Correct usage
+                private String anotherField;
+            }
+            ]]>
+        </example>
+    </rule>
+    <!-- the rules below were givinig errors not found so removed temporarily -->
+    <!-- <rule ref="category/java/design.xml/ExcessiveClassLength">
+        <properties>
+            <property name="minimum" value="1000"/>
+        </properties>
+    </rule>
+
+    <rule ref="category/java/design.xml/ExcessiveMethodLength">
+        <properties>
+            <property name="minimum" value="100"/>
+        </properties>
+    </rule>
+	 -->
+
+    <!-- many more rules are available at https://pmd.github.io/pmd-7.3.0/pmd_rules_java.html -->
+</ruleset>
+
